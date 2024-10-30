@@ -1,5 +1,14 @@
 const nhanvienService = require('../services/nhanvienService');
 
+exports.loginNhanVien = async (req, res) => {
+  const { SoDienThoai, Password } = req.body;
+  try {
+    const nhanVien = await nhanvienService.loginNhanVien(SoDienThoai, Password);
+    res.json(nhanVien);
+  } catch (error) {
+    res.status(401).json({ message: error.message });
+  }
+};
 // Lấy danh sách tất cả nhân viên
 exports.getAllNhanVien = async (req, res) => {
   try {
@@ -10,10 +19,10 @@ exports.getAllNhanVien = async (req, res) => {
   }
 };
 
-// Lấy thông tin nhân viên theo MSNV
+// Lấy thông tin nhân viên theo ID (_id)
 exports.getNhanVienById = async (req, res) => {
   try {
-    const nhanvien = await nhanvienService.getNhanVienById(req.params.id);
+    const nhanvien = await nhanvienService.getNhanVienById(req.params.id); // Sử dụng _id
     if (!nhanvien) {
       return res.status(404).json({ message: 'Không tìm thấy nhân viên' });
     }
@@ -33,10 +42,10 @@ exports.createNhanVien = async (req, res) => {
   }
 };
 
-// Cập nhật thông tin nhân viên theo MSNV
+// Cập nhật thông tin nhân viên theo ID (_id)
 exports.updateNhanVien = async (req, res) => {
   try {
-    const updatedNhanVien = await nhanvienService.updateNhanVien(req.params.id, req.body);
+    const updatedNhanVien = await nhanvienService.updateNhanVien(req.params.id, req.body); // Sử dụng _id
     if (!updatedNhanVien) {
       return res.status(404).json({ message: 'Không tìm thấy nhân viên' });
     }
@@ -46,10 +55,10 @@ exports.updateNhanVien = async (req, res) => {
   }
 };
 
-// Xóa nhân viên theo MSNV
+// Xóa nhân viên theo ID (_id)
 exports.deleteNhanVien = async (req, res) => {
   try {
-    const deletedNhanVien = await nhanvienService.deleteNhanVien(req.params.id);
+    const deletedNhanVien = await nhanvienService.deleteNhanVien(req.params.id); // Sử dụng _id
     if (!deletedNhanVien) {
       return res.status(404).json({ message: 'Không tìm thấy nhân viên để xóa' });
     }

@@ -30,6 +30,11 @@ const routes = [
      name: "editsach",
      component: () => import("@/views/EditSach.vue")
    },
+   {
+     path: "/nhanvien/themnhanvien",
+     name: "addnhanvien",
+     component: () => import("@/views/AddNhanVien.vue")
+   },
 //   {
 //     path: "/nxb",
 //     name: "nhaxuatban",

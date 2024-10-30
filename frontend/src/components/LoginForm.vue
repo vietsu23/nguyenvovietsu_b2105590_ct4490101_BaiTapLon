@@ -43,33 +43,44 @@ export default {
     },
   },
   methods: {
-   async handleLogin() {
-  try {
-    const response = await axios.post('http://localhost:3000/api/docgia/login', {
-      Email: this.username,
-      Password: this.password,
-    });
+    async handleLogin() {
+      try {
+        let loginUrl;
+        if (this.role === "docgia") {
+          loginUrl = 'http://localhost:3000/api/docgia/login';
+        } else if (this.role === "nhanvien") {
+          loginUrl = 'http://localhost:3000/api/nhanvien/login'; // URL cho đăng nhập nhân viên
+        }
 
-    localStorage.setItem('username', response.data.username);
-    
-    // Gán vai trò vào localStorage tùy thuộc vào role
-    const role = this.role === "docgia" ? "reader" : "manager"; // Gán vai trò tương ứng
-    localStorage.setItem('userRole', role);
+        const loginData = this.role === "nhanvien" 
+          ? { SoDienThoai: this.username, Password: this.password } // Sử dụng số điện thoại
+          : { Email: this.username, Password: this.password }; // Sử dụng email cho đọc giả
 
-    if (response.data && response.data.docgia) {
-      const docGiaName = response.data.docgia.Ten;
-      console.log("Tên đọc giả:", docGiaName);
-      this.$emit("loginSuccess", docGiaName);
-      this.$router.push('/'); 
-    } else {
-      console.error("Không có dữ liệu đọc giả trong phản hồi");
+        const response = await axios.post(loginUrl, loginData);
+
+        localStorage.setItem('username', response.data.username);
+
+        // Gán vai trò vào localStorage tùy thuộc vào role
+        const role = this.role === "docgia" ? "docgia" : "nhanvien"; // Gán vai trò tương ứng
+        localStorage.setItem('userRole', role);
+        console.log(response.data);
+        if (response.data) {
+          const userName = this.role === "docgia" ? response.data.docgia?.Ten : response.data.nhanVien?.HoTenNV; // Lấy tên đọc giả hoặc nhân viên
+          console.log("Tên người dùng:", userName);
+          this.$emit("loginSuccess", userName);
+          this.$router.push('/'); 
+        } else {
+          console.error("Không có dữ liệu người dùng trong phản hồi");
+        }
+      } catch (error) {
+        console.error(error.response ? error.response.data.message : error.message);
+        alert('Số điện thoại hoặc mật khẩu không chính xác');
+      }
     }
-  } catch (error) {
-    console.error(error.response ? error.response.data.message : error.message);
-    alert('Email hoặc mật khẩu không chính xác');
   }
-}
-
-  },
 };
 </script>
+
+<style scoped>
+/* Thêm các kiểu CSS nếu cần thiết */
+</style>

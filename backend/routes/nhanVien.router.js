@@ -8,6 +8,7 @@ router.post('/', nhanvienController.createNhanVien);
 // Lấy danh sách tất cả nhân viên
 router.get('/', nhanvienController.getAllNhanVien);
 
+router.post('/login', nhanvienController.loginNhanVien);
 // Lấy thông tin nhân viên theo MSNV
 router.get('/:id', nhanvienController.getNhanVienById);
 

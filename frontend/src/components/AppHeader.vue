@@ -2,13 +2,13 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a href="/" class="navbar-brand">Quản Lý Mượn Sách</a>
-      <div class="navbar-nav">
+      <div id="alo" class="navbar-nav">
         <li class="nav-item" v-if="username">
-          <span class="nav-link">Xin chào, {{ username }}</span>
+          <span style="color:#ffffff;" class="nav-link">Xin chào, {{ username }}</span>
           <button @click="logout" class="btn btn-danger">Đăng Xuất</button>
         </li>
         <li class="nav-item" v-else>
-          <router-link :to="{ name: 'login' }" class="nav-link">
+          <router-link :to="{ name: 'login' }" style="color:#ffffff;" class="nav-link">
             Đăng Nhập/Đăng Kí            
           </router-link>
         </li>
@@ -38,3 +38,12 @@ export default {
   },
 };
 </script>
+
+<style>
+  #alo {
+    background-color: grey;
+    border-radius: 5px;
+    text-align: center;
+    margin: 5px;
+  }
+</style>
