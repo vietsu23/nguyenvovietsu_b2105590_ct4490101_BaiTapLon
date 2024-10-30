@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const docgiaController = require('../controllers/docGiaController');
 
-// Tạo mới một đọc giả
-router.post('/', docgiaController.createDocGia);
+router.post('/', docgiaController.registerDocGia);
 
+router.post('/login', docgiaController.loginDocGia);
 // Lấy danh sách tất cả đọc giả
 router.get('/', docgiaController.getAllDocGia);
 

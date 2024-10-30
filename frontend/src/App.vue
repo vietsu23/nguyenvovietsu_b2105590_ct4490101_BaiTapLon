@@ -1,9 +1,7 @@
 <template>
   <div id="app">
-    <AppHeader />
-    <div class="container-fluid mt-3"> <!-- Thay 'container' thành 'container-fluid' -->
-      <router-view /> <!-- Đây là nơi hiển thị component được điều hướng -->
-    </div>
+    <AppHeader :username="username" @logout="handleLogout" />
+    <router-view :is-logged-in="isLoggedIn" @loginSuccess="updateLoginStatus" />
   </div>
 </template>
 
@@ -14,13 +12,32 @@ export default {
   components: {
     AppHeader,
   },
+  data() {
+    return {
+      isLoggedIn: false,
+      username: '',
+    };
+  },
+  created() {
+    // Kiểm tra localStorage để duy trì trạng thái đăng nhập
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      this.isLoggedIn = true;
+      this.username = storedUsername; // Lấy tên người dùng từ localStorage
+    }
+  },
+  methods: {
+    updateLoginStatus(username) {
+      this.isLoggedIn = true;
+      this.username = username;
+      localStorage.setItem('username', username); // Lưu tên người dùng vào localStorage
+      console.log("Tên đọc giả đã cập nhật:", username);
+    },
+    handleLogout() {
+      this.isLoggedIn = false;
+      this.username = '';
+      localStorage.removeItem('username'); // Xóa tên người dùng khỏi localStorage
+    },
+  },
 };
 </script>
-
-<style>
-.container-fluid {
-  /* Đảm bảo container mở rộng ra toàn bộ chiều rộng */
-  max-width: 100%;
-  padding: 0 15px; /* Đảm bảo có khoảng cách ở hai bên */
-}
-</style>

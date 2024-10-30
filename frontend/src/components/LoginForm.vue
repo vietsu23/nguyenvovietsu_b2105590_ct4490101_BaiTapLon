@@ -13,7 +13,6 @@
       <button type="submit" class="btn btn-primary w-100">Đăng Nhập</button>
     </form>
 
-    <!-- Hiển thị dòng đăng ký nếu role là Đọc Giả -->
     <p v-if="role === 'docgia'" class="mt-3">
       Bạn chưa có tài khoản? <router-link to="/register">Đăng ký ngay!</router-link>
     </p>
@@ -21,6 +20,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   props: {
     role: {
@@ -42,17 +43,33 @@ export default {
     },
   },
   methods: {
-    handleLogin() {
-      console.log(`Đăng nhập với tài khoản: ${this.username}, vai trò: ${this.role}`);
-    },
+   async handleLogin() {
+  try {
+    const response = await axios.post('http://localhost:3000/api/docgia/login', {
+      Email: this.username,
+      Password: this.password,
+    });
+
+    localStorage.setItem('username', response.data.username);
+    
+    // Gán vai trò vào localStorage tùy thuộc vào role
+    const role = this.role === "docgia" ? "reader" : "manager"; // Gán vai trò tương ứng
+    localStorage.setItem('userRole', role);
+
+    if (response.data && response.data.docgia) {
+      const docGiaName = response.data.docgia.Ten;
+      console.log("Tên đọc giả:", docGiaName);
+      this.$emit("loginSuccess", docGiaName);
+      this.$router.push('/'); 
+    } else {
+      console.error("Không có dữ liệu đọc giả trong phản hồi");
+    }
+  } catch (error) {
+    console.error(error.response ? error.response.data.message : error.message);
+    alert('Email hoặc mật khẩu không chính xác');
+  }
+}
+
   },
 };
 </script>
-
-<style scoped>
-/* Style cho form đăng nhập */
-.login {
-  max-width: 400px;
-  margin: auto;
-}
-</style>

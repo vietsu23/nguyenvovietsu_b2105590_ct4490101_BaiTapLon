@@ -6,7 +6,7 @@ import { createWebHistory, createRouter } from "vue-router";
 
 const routes = [
    {
-    path: "/",
+    path: "/login",
     name: "login",
     component: () => import("@/views/LoginSelection.vue"),
   },
@@ -16,9 +16,19 @@ const routes = [
     component: () => import("@/views/Register.vue"),
   },
   {
-     path: "/sachs",
+     path: "/",
      name: "sach",
      component: () => import("@/views/sachsList.vue")
+   },
+   {
+     path: "/sach/themsach",
+     name: "addsach",
+     component: () => import("@/views/AddSach.vue")
+   },
+   {
+     path: "/sach/suasach/:id",
+     name: "editsach",
+     component: () => import("@/views/EditSach.vue")
    },
 //   {
 //     path: "/nxb",

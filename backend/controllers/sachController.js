@@ -1,6 +1,18 @@
 const sachService = require('../services/sachService');
+const multer = require('multer');
+const path = require('path');
 
-// Lấy danh sách tất cả sách
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage: storage });
+
 exports.getAllSach = async (req, res) => {
   try {
     const sachs = await sachService.getAllSach();
@@ -10,7 +22,6 @@ exports.getAllSach = async (req, res) => {
   }
 };
 
-// Lấy thông tin sách theo mã sách (MaSach)
 exports.getSachById = async (req, res) => {
   try {
     const sach = await sachService.getSachById(req.params.id);
@@ -23,30 +34,41 @@ exports.getSachById = async (req, res) => {
   }
 };
 
-// Tạo mới một sách
-exports.createSach = async (req, res) => {
-  try {
-    const newSach = await sachService.createSach(req.body);
-    res.status(201).json(newSach);
-  } catch (error) {
-    res.status(500).json({ message: 'Lỗi khi tạo sách', error: error.message });
-  }
-};
-
-// Cập nhật thông tin sách theo mã sách (MaSach)
-exports.updateSach = async (req, res) => {
-  try {
-    const updatedSach = await sachService.updateSach(req.params.id, req.body);
-    if (!updatedSach) {
-      return res.status(404).json({ message: 'Không tìm thấy sách' });
+exports.createSach = [
+  upload.single('coverImage'),
+  async (req, res) => {
+    try {
+      const data = req.body;
+      if (req.file) {
+        data.coverImagePath = req.file.path;
+      }
+      const newSach = await sachService.createSach(data);
+      res.status(201).json(newSach);
+    } catch (error) {
+      res.status(500).json({ message: 'Lỗi khi tạo sách', error: error.message });
     }
-    res.json(updatedSach);
-  } catch (error) {
-    res.status(500).json({ message: 'Lỗi khi cập nhật thông tin sách', error: error.message });
-  }
-};
+  },
+];
 
-// Xóa sách theo mã sách (MaSach)
+exports.updateSach = [
+  upload.single('coverImage'),
+  async (req, res) => {
+    try {
+      const data = req.body;
+      if (req.file) {
+        data.coverImagePath = req.file.path;
+      }
+      const updatedSach = await sachService.updateSach(req.params.id, data);
+      if (!updatedSach) {
+        return res.status(404).json({ message: 'Không tìm thấy sách' });
+      }
+      res.json(updatedSach);
+    } catch (error) {
+      res.status(500).json({ message: 'Lỗi khi cập nhật thông tin sách', error: error.message });
+    }
+  },
+];
+
 exports.deleteSach = async (req, res) => {
   try {
     const deletedSach = await sachService.deleteSach(req.params.id);

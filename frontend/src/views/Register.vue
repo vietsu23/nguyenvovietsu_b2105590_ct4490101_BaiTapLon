@@ -1,34 +1,44 @@
 <template>
   <div class="register">
-    <h2>Đăng Ký</h2>
-    <form @submit.prevent="handleRegister">
-      <div>
-        <label for="username">Tài Khoản:</label>
-        <input type="text" v-model="username" required />
-      </div>
-      <div>
-        <label for="password">Mật Khẩu:</label>
-        <input type="password" v-model="password" required />
-      </div>
-      <button type="submit">Đăng Ký</button>
-    </form>
+    <h2>Đăng Ký Đọc Giả</h2>
+    <DocGiaForm :docGia="initialDocGia" @submit:docgia="handleRegister" />
     <p>Đã có tài khoản? <router-link to="/">Đăng nhập ngay!</router-link></p>
   </div>
 </template>
 
 <script>
+import DocGiaForm from "../components/DocGiaForm.vue"; // Đảm bảo đường dẫn đúng
+import axios from 'axios';
+
 export default {
+  components: {
+    DocGiaForm,
+  },
   data() {
     return {
-      username: '',
-      password: ''
+      initialDocGia: {
+        HoLot: '',
+        Ten: '',
+        NgaySinh: '',
+        Phai: '',
+        DiaChi: '',
+        DienThoai: '',
+        Email: '',
+        Password: '',
+      },
     };
   },
   methods: {
-    handleRegister() {
-      // Xử lý đăng ký ở đây
-      console.log('Đăng ký với tài khoản:', this.username);
-    }
-  }
+    async handleRegister(formData) {
+      try {
+        const response = await axios.post("http://localhost:3000/api/docgia/", formData);
+        alert("Đăng ký thành công! Bạn có thể đăng nhập.");
+        this.$router.push("/login");
+      } catch (error) {
+        console.error("Lỗi đăng ký:", error);
+        alert("Đăng ký thất bại. Vui lòng thử lại.");
+      }
+    },
+  },
 };
 </script>

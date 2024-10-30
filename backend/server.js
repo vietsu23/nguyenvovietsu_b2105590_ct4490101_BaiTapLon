@@ -6,9 +6,15 @@ const routes = require('./routes');
 
 const app = express();
 const port = process.env.PORT || 3000;
+const path = require('path');
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use(express.json());  
-app.use(cors());  
+app.use(cors({
+  origin: 'http://localhost:3001', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+}));  
 
 mongoose.connect('mongodb://localhost:27017/library', {
 }).then(() => {

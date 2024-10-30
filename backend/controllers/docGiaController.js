@@ -1,4 +1,5 @@
 const docgiaService = require('../services/DocGiaService');
+const DocGia = require('../models/docgia'); // Nhập model DocGia
 
 // Lấy danh sách tất cả đọc giả
 exports.getAllDocGia = async (req, res) => {
@@ -10,7 +11,7 @@ exports.getAllDocGia = async (req, res) => {
   }
 };
 
-// Lấy thông tin đọc giả theo mã đọc giả (MaDocGia)
+// Lấy thông tin đọc giả theo ID
 exports.getDocGiaById = async (req, res) => {
   try {
     const docgia = await docgiaService.getDocGiaById(req.params.id);
@@ -23,17 +24,29 @@ exports.getDocGiaById = async (req, res) => {
   }
 };
 
-// Tạo mới một đọc giả
-exports.createDocGia = async (req, res) => {
+// Đăng ký đọc giả mới
+exports.registerDocGia = async (req, res) => {
   try {
-    const newDocGia = await docgiaService.createDocGia(req.body);
-    res.status(201).json(newDocGia);
+    const newDocGia = await docgiaService.registerDocGia(req.body); // Sử dụng service đăng ký
+    res.status(201).json({ message: "Đăng ký thành công!", docGia: newDocGia });
   } catch (error) {
-    res.status(500).json({ message: 'Lỗi khi tạo đọc giả', error: error.message });
+    console.error("Lỗi khi đăng ký đọc giả:", error.message); // Ghi log lỗi
+    res.status(500).json({ message: "Lỗi đăng ký", error: error.message });
   }
 };
 
-// Cập nhật thông tin đọc giả theo mã đọc giả (MaDocGia)
+// Đăng nhập đọc giả
+exports.loginDocGia = async (req, res) => {
+  try {
+    const { Email, Password } = req.body; // Chú ý viết đúng tên trường
+    const docgia = await docgiaService.loginDocGia(Email, Password);
+    res.json({ message: 'Đăng nhập thành công', docgia });
+  } catch (error) {
+    res.status(400).json({ message: 'Lỗi khi đăng nhập', error: error.message });
+  }
+};
+
+// Cập nhật thông tin đọc giả theo ID
 exports.updateDocGia = async (req, res) => {
   try {
     const updatedDocGia = await docgiaService.updateDocGia(req.params.id, req.body);
@@ -46,7 +59,7 @@ exports.updateDocGia = async (req, res) => {
   }
 };
 
-// Xóa đọc giả theo mã đọc giả (MaDocGia)
+// Xóa đọc giả theo ID
 exports.deleteDocGia = async (req, res) => {
   try {
     const deletedDocGia = await docgiaService.deleteDocGia(req.params.id);

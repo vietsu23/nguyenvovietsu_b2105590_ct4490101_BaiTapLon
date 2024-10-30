@@ -19,28 +19,28 @@ exports.getAllNXB = async () => {
   }
 };
 
-// Lấy thông tin nhà xuất bản theo mã NXB (MaNXB)
+// Lấy thông tin nhà xuất bản theo id
 exports.getNXBById = async (id) => {
   try {
-    return await NhaXuatBan.findOne({ MaNXB: id });
+    return await NhaXuatBan.findById(id);
   } catch (error) {
     throw new Error(`Lỗi khi lấy nhà xuất bản: ${error.message}`);
   }
 };
 
-// Cập nhật thông tin nhà xuất bản theo mã NXB (MaNXB)
+// Cập nhật thông tin nhà xuất bản theo id
 exports.updateNXB = async (id, data) => {
   try {
-    return await NhaXuatBan.findOneAndUpdate({ MaNXB: id }, data, { new: true });
+    return await NhaXuatBan.findByIdAndUpdate(id, data, { new: true });
   } catch (error) {
     throw new Error(`Lỗi khi cập nhật nhà xuất bản: ${error.message}`);
   }
 };
 
-// Xóa nhà xuất bản theo mã NXB (MaNXB)
+// Xóa nhà xuất bản theo id
 exports.deleteNXB = async (id) => {
   try {
-    return await NhaXuatBan.findOneAndDelete({ MaNXB: id });
+    return await NhaXuatBan.findByIdAndDelete(id);
   } catch (error) {
     throw new Error(`Lỗi khi xóa nhà xuất bản: ${error.message}`);
   }

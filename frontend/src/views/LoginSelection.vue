@@ -8,7 +8,7 @@
     </div>
 
     <div v-if="selectedRole" class="mt-4">
-      <LoginForm :role="selectedRole" />
+      <LoginForm :role="selectedRole" @loginSuccess="$emit('loginSuccess', $event)" />
     </div>
   </div>
 </template>
@@ -32,11 +32,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* Style cho trang lựa chọn */
-.login-selection {
-  max-width: 400px;
-  margin: auto;
-}
-</style>

@@ -10,7 +10,7 @@ exports.getAllNXB = async (req, res) => {
   }
 };
 
-// Lấy thông tin nhà xuất bản theo mã NXB (MaNXB)
+// Lấy thông tin nhà xuất bản theo id
 exports.getNXBById = async (req, res) => {
   try {
     const nxb = await nxbService.getNXBById(req.params.id);
@@ -33,7 +33,7 @@ exports.createNXB = async (req, res) => {
   }
 };
 
-// Cập nhật thông tin nhà xuất bản theo mã NXB (MaNXB)
+// Cập nhật thông tin nhà xuất bản theo id
 exports.updateNXB = async (req, res) => {
   try {
     const updatedNXB = await nxbService.updateNXB(req.params.id, req.body);
@@ -46,7 +46,7 @@ exports.updateNXB = async (req, res) => {
   }
 };
 
-// Xóa nhà xuất bản theo mã NXB (MaNXB)
+// Xóa nhà xuất bản theo id
 exports.deleteNXB = async (req, res) => {
   try {
     const deletedNXB = await nxbService.deleteNXB(req.params.id);
