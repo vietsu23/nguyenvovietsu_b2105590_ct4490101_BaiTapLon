@@ -9,7 +9,7 @@ exports.loginNhanVien = async (req, res) => {
     res.status(401).json({ message: error.message });
   }
 };
-// Lấy danh sách tất cả nhân viên
+
 exports.getAllNhanVien = async (req, res) => {
   try {
     const nhanviens = await nhanvienService.getAllNhanVien();
@@ -19,10 +19,9 @@ exports.getAllNhanVien = async (req, res) => {
   }
 };
 
-// Lấy thông tin nhân viên theo ID (_id)
 exports.getNhanVienById = async (req, res) => {
   try {
-    const nhanvien = await nhanvienService.getNhanVienById(req.params.id); // Sử dụng _id
+    const nhanvien = await nhanvienService.getNhanVienById(req.params.id); 
     if (!nhanvien) {
       return res.status(404).json({ message: 'Không tìm thấy nhân viên' });
     }
@@ -32,7 +31,6 @@ exports.getNhanVienById = async (req, res) => {
   }
 };
 
-// Tạo mới một nhân viên
 exports.createNhanVien = async (req, res) => {
   try {
     const newNhanVien = await nhanvienService.createNhanVien(req.body);
@@ -42,23 +40,21 @@ exports.createNhanVien = async (req, res) => {
   }
 };
 
-// Cập nhật thông tin nhân viên theo ID (_id)
 exports.updateNhanVien = async (req, res) => {
   try {
-    const updatedNhanVien = await nhanvienService.updateNhanVien(req.params.id, req.body); // Sử dụng _id
+    const updatedNhanVien = await nhanvienService.updateNhanVien(req.params.id, req.body);
     if (!updatedNhanVien) {
       return res.status(404).json({ message: 'Không tìm thấy nhân viên' });
     }
-    res.json(updatedNhanVien);
+    res.json({ message: "Cập nhật thành công", data: updatedNhanVien });
   } catch (error) {
     res.status(500).json({ message: 'Lỗi khi cập nhật thông tin nhân viên', error: error.message });
   }
 };
 
-// Xóa nhân viên theo ID (_id)
 exports.deleteNhanVien = async (req, res) => {
   try {
-    const deletedNhanVien = await nhanvienService.deleteNhanVien(req.params.id); // Sử dụng _id
+    const deletedNhanVien = await nhanvienService.deleteNhanVien(req.params.id); 
     if (!deletedNhanVien) {
       return res.status(404).json({ message: 'Không tìm thấy nhân viên để xóa' });
     }
@@ -67,3 +63,5 @@ exports.deleteNhanVien = async (req, res) => {
     res.status(500).json({ message: 'Lỗi khi xóa nhân viên', error: error.message });
   }
 };
+
+

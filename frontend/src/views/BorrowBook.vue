@@ -38,16 +38,16 @@ export default {
     async borrowBook() {
   try {
     const payload = {
-      MaDocGia: this.$store.getters.currentUserId, // Giả sử bạn đã lưu ID của độc giả trong Vuex
+      MaDocGia: this.$store.getters.currentUserId, 
       MaSach: this.bookId,
       NgayMuon: this.borrowDate,
       NgayTra: this.returnDate,
     };
 
-    // Sử dụng route đã định nghĩa cho việc mượn sách
-    await axios.post('http://localhost:3000/api/theodoi', payload); // Gọi đúng route
+    
+    await axios.post('http://localhost:3000/api/theodoi', payload); 
     alert('Mượn sách thành công!');
-    this.$router.push('/sachs'); // Trở về danh sách sách
+    this.$router.push('/sachs'); 
   } catch (error) {
     console.error('Lỗi khi mượn sách:', error);
     alert('Có lỗi xảy ra, vui lòng thử lại.');

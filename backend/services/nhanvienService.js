@@ -3,13 +3,13 @@ const bcrypt = require('bcryptjs');
 
 exports.loginNhanVien = async (soDienThoai, password) => {
   try {
-    // Tìm nhân viên theo số điện thoại
+    
     const nhanVien = await NhanVien.findOne({ SoDienThoai: soDienThoai });
     if (!nhanVien) {
       throw new Error('Nhân viên không tồn tại');
     }
 
-    // Kiểm tra mật khẩu
+    
     const isMatch = await bcrypt.compare(password, nhanVien.Password);
     if (!isMatch) {
       throw new Error('Mật khẩu không chính xác');
@@ -18,7 +18,7 @@ exports.loginNhanVien = async (soDienThoai, password) => {
     return {
       username: nhanVien.HoTenNV,
       nhanVien: {
-        _id: nhanVien._id, // Trả về ID nếu cần
+        _id: nhanVien._id, 
         HoTenNV: nhanVien.HoTenNV,
       },
     };
@@ -26,14 +26,14 @@ exports.loginNhanVien = async (soDienThoai, password) => {
     throw new Error(`Lỗi khi đăng nhập nhân viên: ${error.message}`);
   }
 };
-// Tạo mới một nhân viên
+
 exports.createNhanVien = async (data) => {
   try {
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(data.Password, salt); // 10 là số vòng băm
+    const hashedPassword = await bcrypt.hash(data.Password, salt); 
     const newNhanVien = new NhanVien({
-      ...data, // Sao chép các trường khác
-      Password: hashedPassword, // Thay thế mật khẩu bằng mật khẩu đã băm
+      ...data, 
+      Password: hashedPassword, 
     });
 
     return await newNhanVien.save();
@@ -42,8 +42,6 @@ exports.createNhanVien = async (data) => {
   }
 };
 
-
-// Lấy danh sách tất cả nhân viên
 exports.getAllNhanVien = async () => {
   try {
     return await NhanVien.find();
@@ -52,29 +50,38 @@ exports.getAllNhanVien = async () => {
   }
 };
 
-// Lấy thông tin nhân viên theo ID (MongoDB _id)
 exports.getNhanVienById = async (id) => {
   try {
-    return await NhanVien.findById(id); // Sử dụng findById để tìm theo _id
+    return await NhanVien.findById(id); 
   } catch (error) {
     throw new Error(`Lỗi khi lấy nhân viên: ${error.message}`);
   }
 };
 
-// Cập nhật thông tin nhân viên theo ID (MongoDB _id)
 exports.updateNhanVien = async (id, data) => {
-  try {
-    return await NhanVien.findByIdAndUpdate(id, data, { new: true }); // Sử dụng findByIdAndUpdate
-  } catch (error) {
-    throw new Error(`Lỗi khi cập nhật nhân viên: ${error.message}`);
+  const { currentPassword, newPassword, ...updateData } = data;
+  
+  const nhanvien = await NhanVien.findById(id);
+  if (!nhanvien) throw new Error("Nhân viên không tồn tại");
+    
+  const isMatch = await bcrypt.compare(currentPassword, nhanvien.Password);
+  if (!isMatch) throw new Error("Mật khẩu cũ không chính xác");
+  
+  Object.assign(nhanvien, updateData);
+    
+  if (newPassword) {
+    nhanvien.Password = await bcrypt.hash(newPassword, 10);
   }
+
+  await nhanvien.save();
+  return nhanvien;
 };
 
-// Xóa nhân viên theo ID (MongoDB _id)
 exports.deleteNhanVien = async (id) => {
   try {
-    return await NhanVien.findByIdAndDelete(id); // Sử dụng findByIdAndDelete
+    return await NhanVien.findByIdAndDelete(id); 
   } catch (error) {
     throw new Error(`Lỗi khi xóa nhân viên: ${error.message}`);
   }
 };
+

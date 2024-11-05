@@ -7,8 +7,8 @@ const docgiaSchema = new mongoose.Schema({
   Phai: { type: String, required: true },
   DiaChi: { type: String, required: true },
   DienThoai: { type: String, required: true },
-  Email: { type: String, required: true, unique: true }, // Thêm trường email
-  Password: { type: String, required: true }             // Thêm trường password
+  Email: { type: String, required: true, unique: true }, 
+  Password: { type: String, required: true }             
 });
 
 module.exports = mongoose.model('Docgia', docgiaSchema);

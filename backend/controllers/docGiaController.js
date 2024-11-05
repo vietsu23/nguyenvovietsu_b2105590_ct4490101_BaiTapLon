@@ -1,7 +1,6 @@
-const docgiaService = require('../services/DocGiaService');
-const DocGia = require('../models/docgia'); // Nhập model DocGia
+const docgiaService = require('../services/docgiaService');
+const DocGia = require('../models/docgia'); 
 
-// Lấy danh sách tất cả đọc giả
 exports.getAllDocGia = async (req, res) => {
   try {
     const docgias = await docgiaService.getAllDocGia();
@@ -11,7 +10,6 @@ exports.getAllDocGia = async (req, res) => {
   }
 };
 
-// Lấy thông tin đọc giả theo ID
 exports.getDocGiaById = async (req, res) => {
   try {
     const docgia = await docgiaService.getDocGiaById(req.params.id);
@@ -24,21 +22,19 @@ exports.getDocGiaById = async (req, res) => {
   }
 };
 
-// Đăng ký đọc giả mới
 exports.registerDocGia = async (req, res) => {
   try {
-    const newDocGia = await docgiaService.registerDocGia(req.body); // Sử dụng service đăng ký
+    const newDocGia = await docgiaService.registerDocGia(req.body); 
     res.status(201).json({ message: "Đăng ký thành công!", docGia: newDocGia });
   } catch (error) {
-    console.error("Lỗi khi đăng ký đọc giả:", error.message); // Ghi log lỗi
+    console.error("Lỗi khi đăng ký đọc giả:", error.message); 
     res.status(500).json({ message: "Lỗi đăng ký", error: error.message });
   }
 };
 
-// Đăng nhập đọc giả
 exports.loginDocGia = async (req, res) => {
   try {
-    const { Email, Password } = req.body; // Chú ý viết đúng tên trường
+    const { Email, Password } = req.body; 
     const docgia = await docgiaService.loginDocGia(Email, Password);
     res.json({ message: 'Đăng nhập thành công', docgia });
   } catch (error) {
@@ -46,20 +42,18 @@ exports.loginDocGia = async (req, res) => {
   }
 };
 
-// Cập nhật thông tin đọc giả theo ID
 exports.updateDocGia = async (req, res) => {
   try {
     const updatedDocGia = await docgiaService.updateDocGia(req.params.id, req.body);
     if (!updatedDocGia) {
       return res.status(404).json({ message: 'Không tìm thấy đọc giả' });
     }
-    res.json(updatedDocGia);
+    res.json({ message: "Cập nhật thành công", data: updatedDocGia });
   } catch (error) {
     res.status(500).json({ message: 'Lỗi khi cập nhật thông tin đọc giả', error: error.message });
   }
 };
 
-// Xóa đọc giả theo ID
 exports.deleteDocGia = async (req, res) => {
   try {
     const deletedDocGia = await docgiaService.deleteDocGia(req.params.id);
@@ -71,3 +65,5 @@ exports.deleteDocGia = async (req, res) => {
     res.status(500).json({ message: 'Lỗi khi xóa đọc giả', error: error.message });
   }
 };
+
+

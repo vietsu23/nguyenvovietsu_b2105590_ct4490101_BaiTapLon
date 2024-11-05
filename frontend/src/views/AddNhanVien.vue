@@ -70,18 +70,11 @@ export default {
       try {
         const isValid = await this.$refs.form.validate();
         if (isValid) {
-          // Gọi dịch vụ để thêm nhân viên
+          
           const response = await axios.post('http://localhost:3000/api/nhanvien/', this.nhanVienLocal);
           console.log(response.data);
           alert("Thêm nhân viên thành công!");
-          // Reset form sau khi thành công
-          this.nhanVienLocal = {
-            HoTenNV: '',
-            SoDienThoai: '',
-            Password: '',
-            ChucVu: '',
-            DiaChi: '',
-          };
+          this.$router.push("/nhanvien");     
         }
       } catch (error) {
         console.error("Lỗi khi thêm nhân viên:", error);

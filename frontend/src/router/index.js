@@ -1,8 +1,4 @@
 import { createWebHistory, createRouter } from "vue-router";
-// import SachView from "@/views/SachView.vue";
-// import NhaXuatBanView from "@/views/NhaXuatBanView.vue"; 
-// import TheoDoiMuonSachView from "@/views/TheoDoiMuonSachView.vue"; 
-// import NhanVienView from "@/views/NhanVienView.vue"; 
 
 const routes = [
    {
@@ -35,21 +31,41 @@ const routes = [
      name: "addnhanvien",
      component: () => import("@/views/AddNhanVien.vue")
    },
-//   {
-//     path: "/nxb",
-//     name: "nhaxuatban",
-//     component: NhaXuatBanView,
-//   },
-//   {
-//     path: "/theodoi",
-//     name: "theodoi",
-//     component: TheoDoiMuonSachView,
-//   },
-//   {
-//     path: "/nhanvien",
-//     name: "nhanvien",
-//     component: NhanVienView,
-//   },
+   {
+     path: "/theodoi/muon/:bookId",
+     name: "muon",
+     component: () => import("@/views/Muon.vue")
+   },
+  {
+    path: "/nxb",
+    name: "nhaxuatban",
+    component: () => import("@/views/Nxb.vue"),
+  },
+  {
+     path: "/theodoi",
+     name: "theodoi",
+     component: () => import("@/views/HienThiMuon.vue"),
+   },
+   {
+    path: "/nguoi/:id",
+    name: "suanguoi",
+    component: () => import("@/views/EditNguoi.vue"),
+  },
+  {
+    path: "/docgia",
+    name: "alldocgia",
+    component: () => import("@/views/DocGiaList.vue"),
+  },
+  {
+    path: "/quanly",
+    name: "quanly",
+    component: () => import("@/views/Quanly.vue"),
+  },
+  {
+    path: "/nhanvien",
+    name: "nhanvien",
+    component: () => import("@/views/NhanVienList.vue"),
+  },
   {
     path: "/:pathMatch(.*)*",
     name: "notfound",

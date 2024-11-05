@@ -1,6 +1,5 @@
 const nxbService = require('../services/nxbService');
 
-// Lấy danh sách tất cả nhà xuất bản
 exports.getAllNXB = async (req, res) => {
   try {
     const nxbs = await nxbService.getAllNXB();
@@ -10,7 +9,6 @@ exports.getAllNXB = async (req, res) => {
   }
 };
 
-// Lấy thông tin nhà xuất bản theo id
 exports.getNXBById = async (req, res) => {
   try {
     const nxb = await nxbService.getNXBById(req.params.id);
@@ -23,7 +21,6 @@ exports.getNXBById = async (req, res) => {
   }
 };
 
-// Tạo mới một nhà xuất bản
 exports.createNXB = async (req, res) => {
   try {
     const newNXB = await nxbService.createNXB(req.body);
@@ -33,7 +30,6 @@ exports.createNXB = async (req, res) => {
   }
 };
 
-// Cập nhật thông tin nhà xuất bản theo id
 exports.updateNXB = async (req, res) => {
   try {
     const updatedNXB = await nxbService.updateNXB(req.params.id, req.body);
@@ -46,7 +42,6 @@ exports.updateNXB = async (req, res) => {
   }
 };
 
-// Xóa nhà xuất bản theo id
 exports.deleteNXB = async (req, res) => {
   try {
     const deletedNXB = await nxbService.deleteNXB(req.params.id);

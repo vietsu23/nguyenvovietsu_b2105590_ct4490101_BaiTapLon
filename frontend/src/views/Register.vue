@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import DocGiaForm from "../components/DocGiaForm.vue"; // Đảm bảo đường dẫn đúng
+import DocGiaForm from "../components/DocGiaForm.vue"; 
 import axios from 'axios';
 
 export default {

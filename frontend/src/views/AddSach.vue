@@ -106,7 +106,6 @@ export default {
         formData.append('NamXuatBan', this.sach.NamXuatBan);
         formData.append('TacGia', this.sach.TacGia);
 
-        // Thêm mới nhà xuất bản nếu người dùng chọn "Thêm mới"
         if (this.isAddingNewNXB) {
           const nxbResponse = await axios.post('/api/nxb', this.newNXB);
           formData.append('MaNXB', nxbResponse.data._id);
@@ -124,6 +123,7 @@ export default {
 
         this.message = 'Sách đã được thêm thành công!';
         this.resetForm();
+        this.$router.push("/");
       } catch (error) {
         this.message = `Lỗi khi thêm sách: ${error.response?.data?.message || error.message}`;
       }

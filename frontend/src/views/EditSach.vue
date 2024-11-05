@@ -120,6 +120,6 @@ export default {
 
 <style scoped>
 .editsach {
-  max-width: 600px; /* Tăng chiều rộng cho đẹp */
+  max-width: 600px;
 }
 </style>

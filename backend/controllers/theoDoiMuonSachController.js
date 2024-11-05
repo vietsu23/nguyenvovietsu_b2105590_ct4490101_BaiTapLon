@@ -1,6 +1,5 @@
 const theoDoiMuonSachService = require('../services/theoDoiMuonSachService');
 
-// Lấy danh sách tất cả bản ghi theo dõi mượn sách
 exports.getAllTheoDoiMuonSach = async (req, res) => {
   try {
     const theoDoiMuonSachList = await theoDoiMuonSachService.getAllTheoDoiMuonSach();
@@ -10,7 +9,6 @@ exports.getAllTheoDoiMuonSach = async (req, res) => {
   }
 };
 
-// Lấy thông tin theo dõi mượn sách theo ID
 exports.getTheoDoiMuonSachById = async (req, res) => {
   try {
     const theoDoiMuonSach = await theoDoiMuonSachService.getTheoDoiMuonSachById(req.params.id);
@@ -23,7 +21,6 @@ exports.getTheoDoiMuonSachById = async (req, res) => {
   }
 };
 
-// Tạo mới một bản ghi theo dõi mượn sách
 exports.createTheoDoiMuonSach = async (req, res) => {
   try {
     const newTheoDoiMuonSach = await theoDoiMuonSachService.createTheoDoiMuonSach(req.body);
@@ -33,7 +30,6 @@ exports.createTheoDoiMuonSach = async (req, res) => {
   }
 };
 
-// Cập nhật thông tin theo dõi mượn sách theo ID
 exports.updateTheoDoiMuonSach = async (req, res) => {
   try {
     const updatedTheoDoiMuonSach = await theoDoiMuonSachService.updateTheoDoiMuonSach(req.params.id, req.body);
@@ -46,7 +42,6 @@ exports.updateTheoDoiMuonSach = async (req, res) => {
   }
 };
 
-// Xóa bản ghi theo dõi mượn sách theo ID
 exports.deleteTheoDoiMuonSach = async (req, res) => {
   try {
     const deletedTheoDoiMuonSach = await theoDoiMuonSachService.deleteTheoDoiMuonSach(req.params.id);
@@ -58,3 +53,15 @@ exports.deleteTheoDoiMuonSach = async (req, res) => {
     res.status(500).json({ message: 'Lỗi khi xóa bản ghi theo dõi mượn sách', error: error.message });
   }
 };
+
+exports.getPhieuMuonByDocGia = async (req, res) => {
+  try {
+    const { maDocGia } = req.params; 
+    const phieuMuons = await theoDoiMuonSachService.getPhieuMuonByDocGia(maDocGia); 
+    res.status(200).json(phieuMuons);
+  } catch (error) {
+    console.error('Lỗi khi lấy danh sách phiếu mượn:', error);
+    res.status(500).json({ message: 'Lỗi server khi lấy danh sách phiếu mượn' });
+  }
+};
+
