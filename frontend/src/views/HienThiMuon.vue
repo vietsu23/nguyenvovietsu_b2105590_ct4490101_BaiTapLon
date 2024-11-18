@@ -3,8 +3,8 @@
     <h2 class="text-center mb-4">Danh Sách Phiếu Mượn</h2>
     
     <!-- Icon chuông cho đọc giả -->
-    <div v-if="isReader" class="notification-icon" @click="toggleNotificationModal"> 
-      <i class="fa fa-bell"></i>
+    <div v-if="isReader" style="width: 3rem;"class="card text-center bg-light bell notification-icon" @click="toggleNotificationModal"> 
+      <div><i class="fa fa-bell"></i></div>
       <span v-if="unreadNotifications.length" class="notification-count">{{ unreadNotifications.length }}</span>
     </div>
     
@@ -207,7 +207,7 @@ export default {
 .notification-icon {
   position: absolute; /* Thay đổi từ relative thành absolute */
   top: 20px; /* Điều chỉnh khoảng cách từ trên cùng */
-  right: 20px; /* Điều chỉnh khoảng cách từ bên phải */
+  right: -15px; /* Điều chỉnh khoảng cách từ bên phải */
   font-size: 24px;
   cursor: pointer;
 }
@@ -245,5 +245,8 @@ export default {
 
 .modal-content h4 {
   margin-top: 0;
+}
+#bell {
+  margin: 10px;
 }
 </style>

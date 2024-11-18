@@ -1,34 +1,40 @@
 <template>
   <div>
-    <div class="container mt-4">
+    <div class="container mt-6">
+      <br>
       <h2>Danh Sách Các Quyển Sách</h2>
 
       <!-- Thêm InputSearch -->
       <InputSearch v-model="searchQuery" @submit="searchBooks" />
 
       <router-link v-if="isLoggedIn && isManager" to="/sach/themsach" class="btn btn-success mb-3">Thêm Sách</router-link>
-      
-      <ul v-if="filteredSachs.length" class="list-group">
-        <li v-for="sach in filteredSachs" :key="sach._id" class="list-group-item d-flex align-items-center">
-          <div class="cover-image">
-            <img v-if="sach.coverImagePath" :src="`http://localhost:3000/${sach.coverImagePath}`" alt="Cover Image" />
-          </div>
-          <div class="book-info">
-            <strong>{{ sach.TenSach }}</strong> - Tác giả: {{ sach.TacGia }} <br />
-            Giá: {{ sach.DonGia }} VNĐ | Năm xuất bản: {{ sach.NamXuatBan }} <br/>
-            Số lượng: {{ sach.SoQuyen }}
-            <div class="buttons mt-2">
-              <button v-if="isLoggedIn && isReader" @click="borrowBook(sach._id)" class="btn btn-primary">Mượn</button>
-              <router-link v-if="isLoggedIn && isManager" :to="`/sach/suasach/${sach._id}`" class="btn btn-warning">Sửa</router-link>
-              <button v-if="isLoggedIn && isManager" @click="deleteBook(sach._id)" class="btn btn-danger">Xóa</button>
+
+      <div v-if="filteredSachs.length" class="row">
+        <div v-for="sach in filteredSachs" :key="sach._id" class="col-12 col-md-6 mb-4">
+          <div class="list-group-item d-flex align-items-center book-card">
+            <div class="cover-image" >
+              <img v-if="sach.coverImagePath" :src="`http://localhost:3000/${sach.coverImagePath}`" alt="Cover Image" />
+            </div>
+            <div class="book-info ">
+              <strong>{{ sach.TenSach }}</strong> <br />
+              Tác giả: {{ sach.TacGia }} <br />
+              Giá: {{ sach.DonGia }} VNĐ <br />
+              Năm xuất bản: {{ sach.NamXuatBan }} <br />
+              Số lượng: {{ sach.SoQuyen }}
+              <div class="buttons mt-2">
+                <button v-if="isLoggedIn && isReader" @click="borrowBook(sach._id)" class="btn btn-primary">Mượn</button>
+                <router-link v-if="isLoggedIn && isManager" :to="`/sach/suasach/${sach._id}`" class="btn btn-warning">Sửa</router-link>
+                <button v-if="isLoggedIn && isManager" @click="deleteBook(sach._id)" class="btn btn-danger">Xóa</button>
+              </div>
             </div>
           </div>
-        </li>
-      </ul>
+        </div>
+      </div>
       <p v-else>Không có sách nào trong cơ sở dữ liệu.</p>
     </div>
   </div>
 </template>
+
 
 <script>
 import AppHeader from "@/components/AppHeader.vue";
@@ -106,6 +112,13 @@ export default {
 </script>
 
 <style scoped>
+.book-card {
+  height: 100%; 
+  border: 1px solid #ddd;
+  border-radius: 8px; 
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 .container {
   max-width: 800px;
   margin: auto;
