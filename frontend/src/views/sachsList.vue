@@ -100,13 +100,21 @@ export default {
       this.$router.push({ name: 'muon', params: { bookId: id } });
     },
     async deleteBook(id) {
-      try {
-        await BookService.delete(id); 
-        this.fetchSachs(); 
-      } catch (error) {
-        console.error(`Lỗi khi xóa sách với ID ${id}:`, error);
-      }
-    },
+  const isConfirmed = window.confirm("Bạn có chắc chắn muốn xóa sách này?");
+  if (isConfirmed) {
+    try {
+      await BookService.delete(id); // Gọi phương thức xóa sách từ service
+      this.fetchSachs(); // Cập nhật lại danh sách sách sau khi xóa
+      alert('Xóa sách thành công!');
+    } catch (error) {
+      console.error(`Lỗi khi xóa sách với ID ${id}:`, error);
+      alert('Lỗi khi xóa sách');
+    }
+  } else {
+    alert('Hành động xóa đã bị hủy.');
+  }
+}
+
   },
 };
 </script>

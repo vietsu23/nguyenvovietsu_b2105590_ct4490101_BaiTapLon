@@ -8,21 +8,19 @@
       <span v-if="unreadNotifications.length" class="notification-count">{{ unreadNotifications.length }}</span>
     </div>
     
-    <!-- Modal hiển thị thông báo -->
     <div v-if="showNotificationModal" class="modal-backdrop">
-      <div class="modal-content">
-        <h4>Thông báo của bạn</h4>
-        <ul>
-          <li v-for="notification in unreadNotifications" :key="notification._id">
-            {{ notification.message }}
-          </li>
-        </ul>
-        <button class="btn btn-primary" @click="markNotificationsAsRead">Đánh dấu là đã đọc</button>
-        <button class="btn btn-secondary" @click="toggleNotificationModal">Đóng</button>
-      </div>
-    </div>
+  <div class="modal-content">
+    <h4>Thông báo của bạn</h4>
+    <ul>
+      <li v-for="notification in unreadNotifications" :key="notification._id">
+        <strong>{{ notification.message }}</strong>
+      </li>
+    </ul>
+    <button class="btn btn-primary" @click="markNotificationsAsRead">Đánh dấu là đã đọc</button>
+    <button class="btn btn-secondary" @click="toggleNotificationModal">Đóng</button>
+  </div>
+</div>
 
-    <!-- Bảng phiếu mượn -->
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -59,7 +57,6 @@
       </tbody>
     </table>
 
-    <!-- Modal nhập thông báo -->
     <div v-if="showReminderModal" class="modal-backdrop">
       <div class="modal-content">
         <h4>Gửi thông báo</h4>
@@ -121,18 +118,24 @@ export default {
       }
     },
     async deleteBook(recordId, bookId, quantity) {
-      try {
-        const response = await axios.get(`/api/sach/${bookId}`);
-        const bookQuantity = response.data.SoQuyen;
-        await axios.delete(`/api/theodoi/${recordId}`);
-        await axios.put(`/api/sach/${bookId}`, { SoQuyen: bookQuantity + quantity });
-        this.fetchRecords();
-        alert('Xóa Phiếu Mượn Thành Công');
-      } catch (error) {
-        console.error('Lỗi khi xóa:', error);
-        alert('Không thể xóa');
-      }
-    },
+  const isConfirmed = window.confirm("Bạn có chắc chắn muốn xóa phiếu mượn này?");
+  if (isConfirmed) {
+    try {
+      const response = await axios.get(`/api/sach/${bookId}`);
+      const bookQuantity = response.data.SoQuyen;
+      await axios.delete(`/api/theodoi/${recordId}`);
+      await axios.put(`/api/sach/${bookId}`, { SoQuyen: bookQuantity + quantity });
+      this.fetchRecords();
+      alert('Xóa Phiếu Mượn Thành Công');
+    } catch (error) {
+      console.error('Lỗi khi xóa:', error);
+      alert('Không thể xóa');
+    }
+  } else {
+    alert('Hành động xóa đã bị hủy.');
+  }
+}
+,
     openReminderModal(maDocGia) {
       this.currentDocGiaId = maDocGia; 
       this.showReminderModal = true; 
@@ -141,19 +144,29 @@ export default {
       this.showReminderModal = !this.showReminderModal; 
     },
     async sendReminder(maDocGia) {
-      try {
-        await axios.post('/api/thongbao', {
-          maDocGia,
-          message: this.notificationMessage 
-        });
-        alert('Thông báo đã được gửi đến đọc giả.');
-        this.notificationMessage = ''; 
-        this.toggleReminderModal(); 
-      } catch (error) {
-        console.error('Lỗi khi gửi thông báo:', error);
-        alert('Không thể gửi thông báo');
-      }
-    },
+  try {
+    const record = this.records.find(record => record.MaDocGia && record.MaDocGia._id === maDocGia); 
+    const bookName = record.MaSach ? record.MaSach.TenSach : 'Không xác định'; 
+    const borrowDate = new Date(record.NgayMuon).toLocaleDateString(); 
+    const returnDate = new Date(record.NgayTra).toLocaleDateString(); 
+    const quantity = record.SoLuong; 
+
+    const notificationMessage = `Phiếu mượn: "${bookName}" vào ngày: ${borrowDate}. Ngày trả dự kiến: ${returnDate}. Số lượng: ${quantity}. ${this.notificationMessage}`;
+
+    await axios.post('/api/thongbao', {
+      maDocGia,
+      message: notificationMessage 
+    });
+
+    alert('Thông báo đã được gửi đến đọc giả.');
+    this.notificationMessage = ''; 
+    this.toggleReminderModal(); 
+  } catch (error) {
+    console.error('Lỗi khi gửi thông báo:', error);
+    alert('Không thể gửi thông báo');
+  }
+}
+,
     checkUserRole() {
       const userRole = localStorage.getItem('userRole');
       this.isReader = userRole === 'docgia';

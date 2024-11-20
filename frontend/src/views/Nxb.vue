@@ -135,18 +135,21 @@ export default {
 
 
     async deleteNXB(id) {
-      try {
-        await axios.delete(`/api/nxb/${id}`);
-        this.nxbs = this.nxbs.filter(nxb => nxb._id !== id);
-        alert('Xóa nhà xuất bản thành công!'); 
-      } catch (error) {
-        console.error('Lỗi khi xóa nhà xuất bản:', error);
-        alert('Lỗi khi xóa nhà xuất bản'); 
-      }
-    },
-    cancelEdit() {
-      this.showEditForm = false;
-    },
+  const isConfirmed = window.confirm("Bạn có chắc chắn muốn xóa nhà xuất bản này?");
+  if (isConfirmed) {
+    try {
+      await axios.delete(`/api/nxb/${id}`);
+      this.nxbs = this.nxbs.filter(nxb => nxb._id !== id);
+      alert('Xóa nhà xuất bản thành công!');
+    } catch (error) {
+      console.error('Lỗi khi xóa nhà xuất bản:', error);
+      alert('Lỗi khi xóa nhà xuất bản');
+    }
+  } else {
+    alert('Hành động xóa đã bị hủy.');
+  }
+}
+
   },
   mounted() {
     this.fetchNXBs();

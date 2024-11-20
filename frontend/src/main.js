@@ -5,6 +5,7 @@ import { required, email, min } from '@vee-validate/rules';
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 import './assets/main.css';
 import router from "./router";
