@@ -64,4 +64,24 @@ exports.deleteNhanVien = async (req, res) => {
   }
 };
 
+exports.updateNhanVienPermission = async (req, res) => {
+  const { id } = req.params;
+  const { __v } = req.body; // Nhận giá trị _V từ request body
+
+  try {
+    const updatedNhanVien = await nhanvienService.updateNhanVienPermission(id, __v);
+
+    if (!updatedNhanVien) {
+      return res.status(404).json({ message: 'Không tìm thấy nhân viên!' });
+    }
+
+    res.json({
+      message: 'Cập nhật quyền thành công!',
+      data: updatedNhanVien,
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Lỗi khi cập nhật quyền', error: error.message });
+  }
+};
+
 

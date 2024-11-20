@@ -85,3 +85,26 @@ exports.deleteNhanVien = async (id) => {
   }
 };
 
+exports.updateNhanVienPermission = async (id, __v) => {
+  try {
+    // Kiểm tra giá trị hợp lệ cho _V
+    if (__v !== 0 && __v !== 1) {
+      throw new Error('Giá trị _V không hợp lệ! Chỉ chấp nhận 0 hoặc 1.');
+    }
+
+    // Tìm và cập nhật trường _V
+    const nhanVien = await NhanVien.findByIdAndUpdate(
+      id,
+      { __v },
+      { new: true } // Trả về document sau khi cập nhật
+    );
+
+    if (!nhanVien) {
+      throw new Error('Nhân viên không tồn tại.');
+    }
+
+    return nhanVien;
+  } catch (error) {
+    throw new Error(`Lỗi khi cập nhật quyền: ${error.message}`);
+  }
+};

@@ -21,6 +21,18 @@
           <td>
             <router-link :to="`/nguoi/${nhanVien._id}`" class="btn btn-warning btn-sm me-2">Sửa</router-link>
             <button @click="deleteNhanVien(nhanVien._id)" class="btn btn-danger btn-sm">Xóa</button>
+            <button 
+              v-if="!nhanVien.__v" 
+              @click="updatePermission(nhanVien._id, 1)" 
+              class="btn btn-success btn-sm me-2">
+              Cấp quyền
+            </button>
+            <button 
+              v-if="nhanVien.__v" 
+              @click="updatePermission(nhanVien._id, 0)" 
+              class="btn btn-secondary btn-sm">
+              Thu hồi quyền
+            </button>
           </td>
         </tr>
       </tbody>
@@ -56,7 +68,17 @@ export default {
           console.error('Lỗi khi xóa nhân viên:', error);
         }
       }
+    },
+    async updatePermission(id, permission) {
+    try {
+      await axios.patch(`/api/nhanvien/${id}`, { __v: permission });
+      this.fetchNhanViens(); // Cập nhật lại danh sách
+      alert(permission === 1 ? 'Cấp quyền thành công!' : 'Thu hồi quyền thành công!');
+    } catch (error) {
+      console.error('Lỗi khi cập nhật quyền:', error);
+      alert('Cập nhật quyền thất bại!');
     }
+  },
   },
   created() {
     this.fetchNhanViens(); 
