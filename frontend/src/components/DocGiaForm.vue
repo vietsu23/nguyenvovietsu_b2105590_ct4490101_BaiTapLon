@@ -44,7 +44,8 @@
             <Field id="Password" name="Password" as="input" type="password" class="form-control" v-model="docGiaLocal.Password" />
             <ErrorMessage name="Password" class="error-feedback" />
         </div>
-        <div class="form-group">
+        <br/>
+        <div class="form-group text-center">
             <button type="submit" class="btn btn-primary">Đăng ký</button>
         </div>
     </Form>

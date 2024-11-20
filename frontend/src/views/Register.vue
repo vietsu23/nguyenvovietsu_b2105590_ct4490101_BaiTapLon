@@ -1,8 +1,8 @@
 <template>
   <div class="register">
-    <h2>Đăng Ký Đọc Giả</h2>
+    <h2 class="text-center">Đăng Ký Đọc Giả</h2>
     <DocGiaForm :docGia="initialDocGia" @submit:docgia="handleRegister" />
-    <p>Đã có tài khoản? <router-link to="/login">Đăng nhập ngay!</router-link></p>
+    <p class="text-center">Đã có tài khoản? <router-link to="/login">Đăng nhập ngay!</router-link></p>
   </div>
 </template>
 

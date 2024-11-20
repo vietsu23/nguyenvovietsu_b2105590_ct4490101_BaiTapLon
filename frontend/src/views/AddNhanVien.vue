@@ -1,4 +1,5 @@
 <template>
+  <h2 class="text-center">Thêm Nhân viên</h2>
   <Form ref="form" @submit="submitNhanVien" :validation-schema="nhanVienFormSchema">
     <div class="form-group">
       <label for="HoTenNV">Họ Tên:</label>
@@ -25,7 +26,7 @@
       <Field id="DiaChi" name="DiaChi" as="input" type="text" class="form-control" v-model="nhanVienLocal.DiaChi" />
       <ErrorMessage name="DiaChi" class="error-feedback" />
     </div>
-    <div class="form-group">
+    <div class="form-group text-center">
       <button type="submit" class="btn btn-primary">Thêm Nhân Viên</button>
     </div>
   </Form>
